@@ -18,7 +18,9 @@ var user = {
   }
 };
 
-var ex1 = undefined;
+var ex1 = _.compose(join, _.map(safeProp('name')), join, _.map(safeProp('street')), safeProp('address'))
+var ex1 = _.compose(chain(safeProp('name')), chain(safeProp('street')), safeProp('address'))
+var ex1 = _.compose(_.composeK(safeProp('name'), safeProp('street')), safeProp('address'))
 
 
 // Exercise 2
@@ -36,7 +38,10 @@ var pureLog = function(x) {
   });
 }
 
-var ex2 = undefined;
+var split = _.curry((delim, str) => String.prototype.split.call(str, delim))
+var path = require('path');
+var ex2 = _.compose(chain(pureLog), _.map(_.compose(_.last, split(path.sep))), getFile);
+var ex2 = _.compose(chain(_.compose(pureLog, _.last, split(path.sep))), getFile);
 
 
 
@@ -60,7 +65,7 @@ var getComments = function(i) {
   });
 }
 
-var ex3 = undefined;
+var ex3 = _.compose(chain(_.compose(getComments, _.prop('id'))), getPost)
 
 
 // Exercise 4
@@ -91,7 +96,13 @@ var validateEmail = function(x){
 }
 
 //  ex4 :: Email -> Either String (IO String)
-var ex4 = undefined;
+var ex4 = _.compose(_.map(_.compose(chain(emailBlast), addToMailingList)), validateEmail)
+
+// use invoker to maintain pointfree pipeline
+var perfIO = _.invoker(0, 'unsafePerformIO')
+var output = _.compose(_.map(_.compose(console.log, perfIO)), ex4)
+
+output('nick@nickbrown.io')
 
 
 module.exports = {ex1: ex1, ex2: ex2, ex3: ex3, ex4: ex4, user: user}
