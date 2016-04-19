@@ -14,7 +14,11 @@ var localStorage = {};
 //  ex1 :: Number -> Number -> Maybe Number
 var ex1 = function(x, y) {
   // write me
+  return Maybe.of(x).map(_.curry((a, b) => a + b)).ap(Maybe.of(y));
+  return Mabe.of(_.add).ap(Maybe.of(x)).ap(Maybe.of(y));
 };
+
+
 
 
 // Exercise 2
@@ -22,7 +26,7 @@ var ex1 = function(x, y) {
 // Now write a function that takes 2 Maybe's and adds them. Use liftA2 instead of ap().
 
 //  ex2 :: Maybe Number -> Maybe Number -> Maybe Number
-var ex2 = undefined;
+var ex2 = liftA2(_.add);
 
 
 
@@ -33,7 +37,7 @@ var makeComments = _.reduce(function(acc, c){ return acc+"<li>"+c+"</li>" }, "")
 var render = _.curry(function(p, cs) { return "<div>"+p.title+"</div>"+makeComments(cs); });
 
 //  ex3 :: Task Error HTML
-var ex3 = undefined;
+var ex3 = liftA2(render, getPost('n'), getComments('n'));
 
 
 
@@ -49,7 +53,7 @@ var getCache = function(x) {
 var game = _.curry(function(p1, p2) { return p1 + ' vs ' + p2; });
 
 //  ex4 :: IO String
-var ex4 = undefined;
+var ex4 = liftA2(game, getCache('player1'), getCache('player2'));
 
 
 
